@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="トレーニング">
+    <meta name="description" content="20分完結トレーニングプログラム - HIIT × 筋トレ × ストレッチ">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect fill='%23667eea' width='192' height='192' rx='40'/%3E%3Ctext x='96' y='130' font-size='80' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'%3E💪%3C/text%3E%3C/svg%3E">
+    <title>20分完結トレーニング</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .timeline-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            width: 350px;
+            padding: 20px;
+            max-height: 90vh;
+            overflow-y: auto;
+            flex-shrink: 0;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            flex: 1;
+            padding: 30px;
+            max-width: 500px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 24px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        .phase {
+            text-align: center;
+            font-size: 16px;
+            color: #667eea;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .exercise-name {
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .timer {
+            text-align: center;
+            font-size: 72px;
+            font-weight: bold;
+            margin: 30px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .timer.work {
+            color: #10b981;
+        }
+
+        .timer.rest {
+            color: #f59e0b;
+        }
+
+        .timer.stretch {
+            color: #8b5cf6;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+
+        .set-info {
+            text-align: center;
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        button {
+            padding: 15px 30px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            max-width: 150px;
+        }
+
+        .start-btn {
+            background: #10b981;
+            color: white;
+        }
+
+        .start-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
+        }
+
+        .pause-btn {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .pause-btn:hover {
+            background: #d97706;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .reset-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .reset-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .status {
+            text-align: center;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .status.work {
+            background: #d1fae5;
+            color: #065f46;
+        }
+
+        .status.rest {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .status.stretch {
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+
+        .stretch-details {
+            background: #f3f4f6;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #4b5563;
+        }
+
+        .stretch-details ul {
+            margin-left: 20px;
+            margin-top: 10px;
+        }
+
+        .stretch-details li {
+            margin-bottom: 5px;
+        }
+
+        .install-guide {
+            background: #dbeafe;
+            color: #1e40af;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        .install-guide strong {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        /* タイムラインスタイル */
+        .timeline-title {
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .timeline-section {
+            margin-bottom: 25px;
+        }
+
+        .timeline-section-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .timeline-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            margin-bottom: 6px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .timeline-item.work-item {
+            border-left-color: #10b981;
+        }
+
+        .timeline-item.rest-item {
+            border-left-color: #f59e0b;
+        }
+
+        .timeline-item.completed {
+            background: #f3f4f6;
+            opacity: 0.6;
+        }
+
+        .timeline-item.completed .timeline-icon {
+            background: #10b981;
+            color: white;
+        }
+
+        .timeline-item.current {
+            background: linear-gradient(90deg, #fef3c7 0%, #fde68a 100%);
+            border-left-color: #f59e0b;
+            transform: scale(1.02);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+        }
+
+        .timeline-item.current .timeline-icon {
+            background: #f59e0b;
+            color: white;
+            animation: pulse 2s infinite;
+        }
+
+        .timeline-item.upcoming {
+            background: #f9fafb;
+            opacity: 0.8;
+        }
+
+        .timeline-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 600;
+            color: #6b7280;
+            flex-shrink: 0;
+        }
+
+        .timeline-content {
+            margin-left: 10px;
+            flex: 1;
+        }
+
+        .timeline-exercise {
+            font-size: 13px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 2px;
+        }
+
+        .timeline-duration {
+            font-size: 11px;
+            color: #6b7280;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .main-container {
+                flex-direction: column;
+            }
+
+            .timeline-container {
+                width: 100%;
+                max-height: 300px;
+                order: 2;
+            }
+
+            .container {
+                max-width: 100%;
+                order: 1;
+            }
+
+            .exercise-name {
+                font-size: 24px;
+                min-height: 60px;
+            }
+
+            .timer {
+                font-size: 56px;
+            }
+
+            button {
+                padding: 12px 20px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <!-- タイムライン -->
+        <div class="timeline-container">
+            <div class="timeline-title">📋 プログラム</div>
+            
+            <div class="timeline-section">
+                <div class="timeline-section-title">
+                    💪 HIITパート (13分)
+                </div>
+                <div id="hiitTimeline"></div>
+            </div>
+
+            <div class="timeline-section">
+                <div class="timeline-section-title">
+                    🧘 ストレッチパート (7分)
+                </div>
+                <div id="stretchTimeline"></div>
+            </div>
+        </div>
+
+        <!-- メインタイマー -->
+        <div class="container">
+            <div class="install-guide">
+                <strong>📱 iPhoneでアプリ化する方法</strong>
+                画面下の共有ボタン (□↑) → 「ホーム画面に追加」
+            </div>
+
+            <h1>🔥 20分完結トレーニング</h1>
+            <div class="subtitle">内臓脂肪減少 × 筋力アップ × 柔軟性</div>
+
+            <div class="phase" id="phase">準備完了</div>
+            
+            <div class="status" id="status">スタートボタンを押してください</div>
+
+            <div class="exercise-name" id="exercise">バーピー</div>
+
+            <div class="timer" id="timer">30</div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress" style="width: 0%"></div>
+            </div>
+
+            <div class="set-info" id="set-info">セット 1 / 17 (HIITパート)</div>
+
+            <div class="controls">
+                <button class="start-btn" id="startBtn" onclick="startWorkout()">スタート</button>
+                <button class="pause-btn" id="pauseBtn" onclick="togglePause()" disabled>一時停止</button>
+                <button class="reset-btn" id="resetBtn" onclick="resetWorkout()">リセット</button>
+            </div>
+
+            <div class="stretch-details" id="stretchDetails" style="display: none;">
+                <strong>ストレッチ詳細：</strong>
+                <ul id="stretchList"></ul>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const hiitExercises = [
+            { name: 'バーピー', sets: 5 },
+            { name: 'プッシュアップ', sets: 2 },
+            { name: 'マウンテンクライマー', sets: 3 },
+            { name: 'レッグレイズ', sets: 2 },
+            { name: 'リバーススノーエンジェル', sets: 3 },
+            { name: 'プランク', sets: 1 },
+            { name: 'サイドプランク', sets: 1 }
+        ];
+
+        const stretches = [
+            { name: '胸・肩ストレッチ', duration: 90, details: ['壁押しストレッチ：左右各30秒', '肩甲骨回し：30秒'] },
+            { name: '背中・体側ストレッチ', duration: 90, details: ['チャイルドポーズ：45秒', 'キャット&カウ：45秒'] },
+            { name: '股関節・下半身ストレッチ', duration: 120, details: ['ランジストレッチ：左右各45秒', '開脚前屈：30秒'] },
+            { name: '腹筋・呼吸ストレッチ', duration: 120, details: ['コブラポーズ：45秒', '仰向け深呼吸：75秒'] }
+        ];
+
+        let currentSet = 0;
+        let isWorking = true;
+        let timeLeft = 30;
+        let isPaused = false;
+        let isStretchPhase = false;
+        let currentStretchIndex = 0;
+        let timer = null;
+
+        // タイムラインを生成（運動と休憩を分ける）
+        function generateTimeline() {
+            const hiitTimelineEl = document.getElementById('hiitTimeline');
+            const stretchTimelineEl = document.getElementById('stretchTimeline');
+
+            // HIITタイムライン（運動と休憩を別々に表示）
+            let itemNumber = 0;
+            hiitExercises.forEach(exercise => {
+                for (let i = 0; i < exercise.sets; i++) {
+                    // 運動
+                    const workItem = document.createElement('div');
+                    workItem.className = 'timeline-item work-item upcoming';
+                    workItem.id = `hiit-${itemNumber}-work`;
+                    workItem.innerHTML = `
+                        <div class="timeline-icon">💪</div>
+                        <div class="timeline-content">
+                            <div class="timeline-exercise">${exercise.name}</div>
+                            <div class="timeline-duration">30秒運動</div>
+                        </div>
+                    `;
+                    hiitTimelineEl.appendChild(workItem);
+
+                    // 休憩
+                    const restItem = document.createElement('div');
+                    restItem.className = 'timeline-item rest-item upcoming';
+                    restItem.id = `hiit-${itemNumber}-rest`;
+                    restItem.innerHTML = `
+                        <div class="timeline-icon">⏸️</div>
+                        <div class="timeline-content">
+                            <div class="timeline-exercise">休憩</div>
+                            <div class="timeline-duration">15秒</div>
+                        </div>
+                    `;
+                    hiitTimelineEl.appendChild(restItem);
+
+                    itemNumber++;
+                }
+            });
+
+            // ストレッチタイムライン
+            stretches.forEach((stretch, index) => {
+                const item = document.createElement('div');
+                item.className = 'timeline-item upcoming';
+                item.id = `stretch-${index}`;
+                item.innerHTML = `
+                    <div class="timeline-icon">${index + 1}</div>
+                    <div class="timeline-content">
+                        <div class="timeline-exercise">${stretch.name}</div>
+                        <div class="timeline-duration">${stretch.duration}秒</div>
+                    </div>
+                `;
+                stretchTimelineEl.appendChild(item);
+            });
+        }
+
+        // タイムラインを更新
+        function updateTimeline() {
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                item.classList.remove('current', 'completed', 'upcoming');
+                item.classList.add('upcoming');
+            });
+
+            if (isStretchPhase) {
+                // HIITは全て完了
+                for (let i = 0; i < 17; i++) {
+                    const workItem = document.getElementById(`hiit-${i}-work`);
+                    const restItem = document.getElementById(`hiit-${i}-rest`);
+                    if (workItem) workItem.classList.replace('upcoming', 'completed');
+                    if (restItem) restItem.classList.replace('upcoming', 'completed');
+                }
+
+                // ストレッチ
+                for (let i = 0; i < stretches.length; i++) {
+                    const item = document.getElementById(`stretch-${i}`);
+                    if (i < currentStretchIndex) {
+                        item.classList.replace('upcoming', 'completed');
+                    } else if (i === currentStretchIndex) {
+                        item.classList.replace('upcoming', 'current');
+                        item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                    }
+                }
+            } else {
+                // HIIT
+                for (let i = 0; i < 17; i++) {
+                    const workItem = document.getElementById(`hiit-${i}-work`);
+                    const restItem = document.getElementById(`hiit-${i}-rest`);
+                    
+                    if (i < currentSet) {
+                        if (workItem) workItem.classList.replace('upcoming', 'completed');
+                        if (restItem) restItem.classList.replace('upcoming', 'completed');
+                    } else if (i === currentSet) {
+                        if (isWorking) {
+                            if (workItem) {
+                                workItem.classList.replace('upcoming', 'current');
+                                workItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            }
+                            if (restItem) restItem.classList.add('upcoming');
+                        } else {
+                            if (workItem) workItem.classList.replace('upcoming', 'completed');
+                            if (restItem) {
+                                restItem.classList.replace('upcoming', 'current');
+                                restItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        function getCurrentExercise() {
+            let setCount = 0;
+            for (let i = 0; i < hiitExercises.length; i++) {
+                if (currentSet < setCount + hiitExercises[i].sets) {
+                    return hiitExercises[i].name;
+                }
+                setCount += hiitExercises[i].sets;
+            }
+            return 'バーピー';
+        }
+
+        function updateDisplay() {
+            const timerEl = document.getElementById('timer');
+            const exerciseEl = document.getElementById('exercise');
+            const statusEl = document.getElementById('status');
+            const setInfoEl = document.getElementById('set-info');
+            const phaseEl = document.getElementById('phase');
+            const stretchDetailsEl = document.getElementById('stretchDetails');
+            const stretchListEl = document.getElementById('stretchList');
+
+            timerEl.textContent = timeLeft;
+
+            if (isStretchPhase) {
+                phaseEl.textContent = 'ストレッチパート（7分）';
+                exerciseEl.textContent = stretches[currentStretchIndex].name;
+                statusEl.textContent = 'ストレッチ中';
+                statusEl.className = 'status stretch';
+                timerEl.className = 'timer stretch';
+                setInfoEl.textContent = `ストレッチ ${currentStretchIndex + 1} / 4`;
+                
+                stretchDetailsEl.style.display = 'block';
+                stretchListEl.innerHTML = stretches[currentStretchIndex].details
+                    .map(detail => `<li>${detail}</li>`)
+                    .join('');
+            } else {
+                phaseEl.textContent = 'HIITパート（13分）';
+                stretchDetailsEl.style.display = 'none';
+                
+                if (isWorking) {
+                    exerciseEl.textContent = getCurrentExercise();
+                    statusEl.textContent = '運動中（7割の力で）';
+                    statusEl.className = 'status work';
+                    timerEl.className = 'timer work';
+                } else {
+                    exerciseEl.textContent = '休憩';
+                    statusEl.textContent = '休憩中';
+                    statusEl.className = 'status rest';
+                    timerEl.className = 'timer rest';
+                }
+                setInfoEl.textContent = `セット ${currentSet + 1} / 17 (HIITパート)`;
+            }
+
+            let totalSets = 17 + 4;
+            let currentProgress = isStretchPhase ? 17 + currentStretchIndex : currentSet;
+            let progress = (currentProgress / totalSets) * 100;
+            document.getElementById('progress').style.width = progress + '%';
+
+            updateTimeline();
+        }
+
+        // 音声関数
+        function playTickSound() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = 440;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.05);
+            } catch (e) {
+                console.log('Audio not supported');
+            }
+        }
+
+        function playBeep(frequency = 800, duration = 200) {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                oscillator.frequency.value = frequency;
+                oscillator.type = 'sine';
+                
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration / 1000);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + duration / 1000);
+            } catch (e) {
+                console.log('Audio not supported');
+            }
+        }
+
+        function startWorkout() {
+            if (timer) return;
+            
+            document.getElementById('startBtn').disabled = true;
+            document.getElementById('pauseBtn').disabled = false;
+            isPaused = false;
+            
+            playBeep(600, 300);
+            
+            timer = setInterval(() => {
+                if (isPaused) return;
+                
+                timeLeft--;
+                
+                // チクタク音（最後の3秒以外）
+                if (timeLeft > 3) {
+                    playTickSound();
+                }
+                
+                // カウントダウン音（最後の3秒）
+                if (timeLeft <= 3 && timeLeft > 0) {
+                    playBeep(800, 100);
+                }
+                
+                if (timeLeft <= 0) {
+                    playBeep(1000, 300);
+                    
+                    if (isStretchPhase) {
+                        currentStretchIndex++;
+                        if (currentStretchIndex >= stretches.length) {
+                            clearInterval(timer);
+                            timer = null;
+                            alert('🎉 トレーニング完了！お疲れ様でした！');
+                            resetWorkout();
+                            return;
+                        }
+                        timeLeft = stretches[currentStretchIndex].duration;
+                    } else {
+                        if (isWorking) {
+                            isWorking = false;
+                            timeLeft = 15;
+                        } else {
+                            isWorking = true;
+                            currentSet++;
+                            
+                            if (currentSet >= 17) {
+                                isStretchPhase = true;
+                                currentStretchIndex = 0;
+                                timeLeft = stretches[0].duration;
+                            } else {
+                                timeLeft = 30;
+                            }
+                        }
+                    }
+                }
+                
+                updateDisplay();
+            }, 1000);
+        }
+
+        function togglePause() {
+            isPaused = !isPaused;
+            document.getElementById('pauseBtn').textContent = isPaused ? '再開' : '一時停止';
+            
+            if (!isPaused) {
+                playBeep(600, 200);
+            }
+        }
+
+        function resetWorkout() {
+            clearInterval(timer);
+            timer = null;
+            currentSet = 0;
+            isWorking = true;
+            timeLeft = 30;
+            isPaused = false;
+            isStretchPhase = false;
+            currentStretchIndex = 0;
+            
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('pauseBtn').disabled = true;
+            document.getElementById('pauseBtn').textContent = '一時停止';
+            
+            document.getElementById('status').textContent = 'スタートボタンを押してください';
+            document.getElementById('status').className = 'status';
+            document.getElementById('phase').textContent = '準備完了';
+            
+            updateDisplay();
+        }
+
+        // 初期化
+        generateTimeline();
+        updateDisplay();
+    </script>
+</body>
+</html>
