@@ -3,14 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#667eea">
+    <meta name="theme-color" content="#1a1a2e">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="トレーニング">
-    <meta name="description" content="20分完結トレーニングプログラム - HIIT × 筋トレ × ストレッチ">
-    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect fill='%23667eea' width='192' height='192' rx='40'/%3E%3Ctext x='96' y='130' font-size='80' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'%3E💪%3C/text%3E%3C/svg%3E">
-    <title>20分完結トレーニング</title>
+    <meta name="apple-mobile-web-app-title" content="Workout">
+    <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect fill='%231a1a2e' width='192' height='192' rx='40'/%3E%3Ctext x='96' y='130' font-size='80' font-weight='bold' fill='white' text-anchor='middle' font-family='sans-serif'%3E💪%3C/text%3E%3C/svg%3E">
+    <title>Workout Timer</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap');
+        
         * {
             margin: 0;
             padding: 0;
@@ -19,249 +20,39 @@
 
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            height: 100vh;
+            color: #e0e0e0;
+            overflow: hidden;
         }
 
         .main-container {
             display: flex;
-            gap: 20px;
-            max-width: 1200px;
+            height: 100vh;
+            max-width: 1400px;
             margin: 0 auto;
         }
 
+        /* タイムライン（左側メイン） */
         .timeline-container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            width: 350px;
+            flex: 1;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            border-right: 2px solid rgba(138, 43, 226, 0.3);
             padding: 20px;
-            max-height: 90vh;
             overflow-y: auto;
-            flex-shrink: 0;
-        }
-
-        .container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-            flex: 1;
-            padding: 30px;
-            max-width: 500px;
-        }
-
-        h1 {
-            text-align: center;
-            color: #333;
-            margin-bottom: 10px;
-            font-size: 24px;
-        }
-
-        .subtitle {
-            text-align: center;
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 30px;
-        }
-
-        .phase {
-            text-align: center;
-            font-size: 16px;
-            color: #667eea;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .exercise-name {
-            text-align: center;
-            font-size: 32px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 20px;
-            min-height: 80px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .timer {
-            text-align: center;
-            font-size: 72px;
-            font-weight: bold;
-            margin: 30px 0;
-            font-family: 'Courier New', monospace;
-        }
-
-        .timer.work {
-            color: #10b981;
-        }
-
-        .timer.rest {
-            color: #f59e0b;
-        }
-
-        .timer.stretch {
-            color: #8b5cf6;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 8px;
-            background: #e5e7eb;
-            border-radius: 10px;
-            overflow: hidden;
-            margin-bottom: 20px;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            transition: width 0.3s ease;
-        }
-
-        .set-info {
-            text-align: center;
-            color: #666;
-            font-size: 18px;
-            margin-bottom: 30px;
-        }
-
-        .controls {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-        }
-
-        button {
-            padding: 15px 30px;
-            font-size: 16px;
-            font-weight: 600;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            flex: 1;
-            max-width: 150px;
-        }
-
-        .start-btn {
-            background: #10b981;
-            color: white;
-        }
-
-        .start-btn:hover {
-            background: #059669;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(16, 185, 129, 0.3);
-        }
-
-        .pause-btn {
-            background: #f59e0b;
-            color: white;
-        }
-
-        .pause-btn:hover {
-            background: #d97706;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(245, 158, 11, 0.3);
-        }
-
-        .reset-btn {
-            background: #ef4444;
-            color: white;
-        }
-
-        .reset-btn:hover {
-            background: #dc2626;
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3);
-        }
-
-        button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-
-        .status {
-            text-align: center;
-            font-size: 18px;
-            font-weight: 600;
-            padding: 10px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-        }
-
-        .status.work {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .status.rest {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .status.stretch {
-            background: #ede9fe;
-            color: #5b21b6;
-        }
-
-        .stretch-details {
-            background: #f3f4f6;
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 20px;
-            font-size: 14px;
-            line-height: 1.6;
-            color: #4b5563;
-        }
-
-        .stretch-details ul {
-            margin-left: 20px;
-            margin-top: 10px;
-        }
-
-        .stretch-details li {
-            margin-bottom: 5px;
-        }
-
-        .install-guide {
-            background: #dbeafe;
-            color: #1e40af;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            text-align: center;
-            font-size: 13px;
-            line-height: 1.5;
-        }
-
-        .install-guide strong {
-            display: block;
-            margin-bottom: 5px;
-            font-size: 14px;
-        }
-
-        /* タイムラインスタイル */
-        .timeline-title {
-            font-size: 18px;
-            font-weight: bold;
-            color: #333;
-            margin-bottom: 20px;
-            text-align: center;
         }
 
         .timeline-section {
-            margin-bottom: 25px;
+            margin-bottom: 30px;
         }
 
         .timeline-section-title {
-            font-size: 14px;
+            font-size: 12px;
             font-weight: 600;
-            color: #667eea;
-            margin-bottom: 10px;
+            color: #bb86fc;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -270,78 +61,359 @@
         .timeline-item {
             display: flex;
             align-items: center;
-            padding: 8px 10px;
-            margin-bottom: 6px;
-            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 8px;
+            border-radius: 12px;
             transition: all 0.3s ease;
-            border-left: 3px solid transparent;
+            border-left: 4px solid transparent;
+            background: rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+        }
+
+        .timeline-item:hover {
+            background: rgba(187, 134, 252, 0.15) !important;
+            transform: translateX(5px);
+            border-left-color: #bb86fc !important;
         }
 
         .timeline-item.work-item {
-            border-left-color: #10b981;
+            border-left-color: #00ff88;
         }
 
         .timeline-item.rest-item {
-            border-left-color: #f59e0b;
+            border-left-color: #ffaa00;
         }
 
         .timeline-item.completed {
-            background: #f3f4f6;
-            opacity: 0.6;
+            background: rgba(255, 255, 255, 0.05);
+            opacity: 0.4;
         }
 
         .timeline-item.completed .timeline-icon {
-            background: #10b981;
-            color: white;
+            background: #00ff88;
+            color: #000;
         }
 
         .timeline-item.current {
-            background: linear-gradient(90deg, #fef3c7 0%, #fde68a 100%);
-            border-left-color: #f59e0b;
-            transform: scale(1.02);
-            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            background: linear-gradient(90deg, rgba(255, 110, 199, 0.25) 0%, rgba(187, 134, 252, 0.25) 100%);
+            border-left-color: #ff6ec7;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(255, 110, 199, 0.4);
         }
 
         .timeline-item.current .timeline-icon {
-            background: #f59e0b;
-            color: white;
+            background: linear-gradient(135deg, #ff6ec7 0%, #bb86fc 100%);
+            color: #000;
             animation: pulse 2s infinite;
+            font-weight: 900;
         }
 
         .timeline-item.upcoming {
-            background: #f9fafb;
-            opacity: 0.8;
+            opacity: 0.6;
         }
 
         .timeline-icon {
-            width: 28px;
-            height: 28px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
-            background: #e5e7eb;
+            background: rgba(255, 255, 255, 0.1);
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 11px;
+            font-size: 14px;
             font-weight: 600;
-            color: #6b7280;
+            color: #a0a0a0;
             flex-shrink: 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .timeline-content {
-            margin-left: 10px;
+            margin-left: 15px;
             flex: 1;
         }
 
         .timeline-exercise {
-            font-size: 13px;
+            font-size: 16px;
             font-weight: 600;
-            color: #333;
-            margin-bottom: 2px;
+            color: #ffffff;
+            margin-bottom: 3px;
         }
 
         .timeline-duration {
+            font-size: 12px;
+            color: #a0a0a0;
+            font-family: 'Orbitron', monospace;
+        }
+
+        /* 右側：タイマー＋コントロール */
+        .control-panel {
+            width: 380px;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .status {
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 2px solid;
+        }
+
+        .status.preparation {
+            background: rgba(0, 217, 255, 0.1);
+            color: #00d9ff;
+            border-color: #00d9ff;
+            animation: pulse-status 2s infinite;
+        }
+
+        .status.work {
+            background: rgba(0, 255, 136, 0.1);
+            color: #00ff88;
+            border-color: #00ff88;
+        }
+
+        .status.rest {
+            background: rgba(255, 170, 0, 0.1);
+            color: #ffaa00;
+            border-color: #ffaa00;
+        }
+
+        .status.stretch {
+            background: rgba(187, 134, 252, 0.1);
+            color: #bb86fc;
+            border-color: #bb86fc;
+        }
+
+        .exercise-name {
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 30px;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-shadow: 0 0 30px rgba(255, 255, 255, 0.3);
+        }
+
+        .timer {
+            text-align: center;
+            font-size: 140px;
+            font-weight: 900;
+            margin: 40px 0;
+            font-family: 'Orbitron', monospace;
+            text-shadow: 0 0 60px currentColor;
+            letter-spacing: 5px;
+            line-height: 1;
+        }
+
+        .timer.preparation {
+            color: #00d9ff;
+            animation: pulse-timer 1s infinite;
+        }
+
+        .timer.work {
+            color: #00ff88;
+        }
+
+        .timer.rest {
+            color: #ffaa00;
+        }
+
+        .timer.stretch {
+            color: #bb86fc;
+        }
+
+        .progress-container {
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #bb86fc 0%, #ff6ec7 100%);
+            transition: width 0.3s ease;
+            box-shadow: 0 0 20px rgba(187, 134, 252, 0.5);
+        }
+
+        .progress-text {
+            text-align: center;
             font-size: 11px;
-            color: #6b7280;
+            color: #a0a0a0;
+            font-family: 'Orbitron', monospace;
+        }
+
+        .controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 12px 20px;
+            font-size: 14px;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex: 1;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #00ff88 0%, #00d9ff 100%);
+            color: #000;
+            font-weight: 900;
+        }
+
+        .start-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.5);
+        }
+
+        .pause-btn {
+            background: linear-gradient(135deg, #ffaa00 0%, #ff6ec7 100%);
+            color: #000;
+            font-weight: 900;
+        }
+
+        .pause-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 110, 199, 0.5);
+        }
+
+        .reset-btn {
+            background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+            color: #fff;
+            font-weight: 900;
+        }
+
+        .reset-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(255, 65, 108, 0.5);
+        }
+
+        button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .how-to-btn {
+            background: linear-gradient(135deg, #bb86fc 0%, #ff6ec7 100%);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+
+        .how-to-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(187, 134, 252, 0.5);
+        }
+
+        /* モーダル */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 600px;
+            width: 90%;
+            position: relative;
+            max-height: 80vh;
+            overflow-y: auto;
+            border: 1px solid rgba(187, 134, 252, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(187, 134, 252, 0.2);
+        }
+
+        .modal-close {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            font-size: 28px;
+            font-weight: bold;
+            color: #ff6ec7;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .modal-close:hover {
+            color: #fff;
+        }
+
+        .modal-title {
+            color: #ff6ec7;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            padding-right: 30px;
+            text-shadow: 0 0 20px rgba(255, 110, 199, 0.5);
+        }
+
+        .modal-steps {
+            list-style: none;
+            padding: 0;
+        }
+
+        .modal-steps li {
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            line-height: 1.6;
+            color: #e0e0e0;
+        }
+
+        .modal-steps li:last-child {
+            border-bottom: none;
+        }
+
+        .modal-steps li:empty {
+            padding: 5px 0;
+            border: none;
         }
 
         @keyframes pulse {
@@ -353,150 +425,384 @@
             }
         }
 
+        @keyframes pulse-status {
+            0%, 100% {
+                box-shadow: 0 0 10px rgba(0, 217, 255, 0.5);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(0, 217, 255, 0.8);
+            }
+        }
+
+        @keyframes pulse-timer {
+            0%, 100% {
+                text-shadow: 0 0 60px #00d9ff, 0 0 100px #00d9ff;
+            }
+            50% {
+                text-shadow: 0 0 80px #00d9ff, 0 0 120px #00d9ff;
+            }
+        }
+
+        /* スクロールバー */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #bb86fc 0%, #ff6ec7 100%);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #ff6ec7 0%, #bb86fc 100%);
+        }
+
+        /* レスポンシブ */
         @media (max-width: 900px) {
             .main-container {
                 flex-direction: column;
             }
 
             .timeline-container {
+                flex: none;
+                height: 40vh;
+                border-right: none;
+                border-bottom: 2px solid rgba(138, 43, 226, 0.3);
+                padding: 15px;
+            }
+
+            .control-panel {
                 width: 100%;
-                max-height: 300px;
-                order: 2;
-            }
-
-            .container {
-                max-width: 100%;
-                order: 1;
-            }
-
-            .exercise-name {
-                font-size: 24px;
-                min-height: 60px;
+                height: 60vh;
+                padding: 20px;
             }
 
             .timer {
-                font-size: 56px;
+                font-size: 100px;
+                margin: 30px 0;
+            }
+
+            .exercise-name {
+                font-size: 20px;
+                margin-bottom: 20px;
+            }
+
+            .status {
+                font-size: 12px;
+                padding: 6px 15px;
+            }
+
+            .timeline-item {
+                padding: 10px 12px;
+            }
+
+            .timeline-exercise {
+                font-size: 14px;
+            }
+
+            .timeline-icon {
+                width: 32px;
+                height: 32px;
+                font-size: 12px;
             }
 
             button {
-                padding: 12px 20px;
-                font-size: 14px;
+                font-size: 12px;
+                padding: 10px 15px;
             }
         }
     </style>
 </head>
 <body>
     <div class="main-container">
-        <!-- タイムライン -->
+        <!-- 左側：タイムライン（メイン） -->
         <div class="timeline-container">
-            <div class="timeline-title">📋 プログラム</div>
-            
             <div class="timeline-section">
                 <div class="timeline-section-title">
-                    💪 HIITパート (13分)
+                    💪 HIIT (13.5分)
                 </div>
                 <div id="hiitTimeline"></div>
             </div>
 
             <div class="timeline-section">
                 <div class="timeline-section-title">
-                    🧘 ストレッチパート (7分)
+                    🧘 Stretch (7分)
                 </div>
                 <div id="stretchTimeline"></div>
             </div>
         </div>
 
-        <!-- メインタイマー -->
-        <div class="container">
-            <div class="install-guide">
-                <strong>📱 iPhoneでアプリ化する方法</strong>
-                画面下の共有ボタン (□↑) → 「ホーム画面に追加」
-            </div>
-
-            <h1>🔥 20分完結トレーニング</h1>
-            <div class="subtitle">内臓脂肪減少 × 筋力アップ × 柔軟性</div>
-
-            <div class="phase" id="phase">準備完了</div>
+        <!-- 右側：タイマー＋コントロール -->
+        <div class="control-panel">
+            <div class="status" id="status">Ready</div>
             
-            <div class="status" id="status">スタートボタンを押してください</div>
-
             <div class="exercise-name" id="exercise">バーピー</div>
+            
+            <div class="timer" id="timer">10</div>
 
-            <div class="timer" id="timer">30</div>
-
-            <div class="progress-bar">
-                <div class="progress-fill" id="progress" style="width: 0%"></div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progress" style="width: 0%"></div>
+                </div>
+                <div class="progress-text" id="progressText">0 / 22</div>
             </div>
-
-            <div class="set-info" id="set-info">セット 1 / 17 (HIITパート)</div>
 
             <div class="controls">
-                <button class="start-btn" id="startBtn" onclick="startWorkout()">スタート</button>
-                <button class="pause-btn" id="pauseBtn" onclick="togglePause()" disabled>一時停止</button>
-                <button class="reset-btn" id="resetBtn" onclick="resetWorkout()">リセット</button>
+                <button class="start-btn" id="startBtn" onclick="startWorkout()">▶ Start</button>
+                <button class="pause-btn" id="pauseBtn" onclick="togglePause()" disabled>⏸ Pause</button>
+                <button class="reset-btn" id="resetBtn" onclick="resetWorkout()">↻ Reset</button>
             </div>
 
-            <div class="stretch-details" id="stretchDetails" style="display: none;">
-                <strong>ストレッチ詳細：</strong>
-                <ul id="stretchList"></ul>
+            <button class="how-to-btn" id="howToBtn" onclick="showHowTo()">📖 やり方</button>
+        </div>
+
+        <!-- モーダル -->
+        <div id="howToModal" class="modal" onclick="closeModalOnOutside(event)">
+            <div class="modal-content" onclick="event.stopPropagation()">
+                <span class="modal-close" onclick="closeHowTo()">&times;</span>
+                <h2 class="modal-title" id="modalTitle">バーピー</h2>
+                <ul class="modal-steps" id="modalSteps"></ul>
             </div>
         </div>
     </div>
 
     <script>
         const hiitExercises = [
-            { name: 'バーピー', sets: 5 },
-            { name: 'プッシュアップ', sets: 2 },
-            { name: 'マウンテンクライマー', sets: 3 },
-            { name: 'レッグレイズ', sets: 2 },
-            { name: 'リバーススノーエンジェル', sets: 3 },
-            { name: 'プランク', sets: 1 },
-            { name: 'サイドプランク', sets: 1 }
+            { 
+                name: 'バーピー', 
+                sets: 4,
+                howTo: [
+                    '1. 直立から素早くしゃがむ',
+                    '2. 両手を床につく',
+                    '3. 足を後ろに伸ばしてプランク姿勢',
+                    '4. 足を戻してしゃがみ姿勢',
+                    '5. ジャンプして手を頭上に',
+                    '※7割の力で、呼吸を止めない'
+                ]
+            },
+            { 
+                name: 'プッシュアップ', 
+                sets: 3,
+                howTo: [
+                    '1. うつ伏せ、手を肩幅より広めに置く',
+                    '2. 体を一直線に保つ',
+                    '3. 肘を曲げて胸を床に近づける',
+                    '4. 押し上げて元の姿勢に',
+                    '※きつい場合は膝をついてOK',
+                    '※胸の筋肉を意識'
+                ]
+            },
+            { 
+                name: 'マウンテンクライマー', 
+                sets: 3,
+                howTo: [
+                    '1. プランク姿勢（腕立て伏せの姿勢）',
+                    '2. 右膝を胸に引き寄せる',
+                    '3. 素早く左右を入れ替える',
+                    '4. 走るように足を動かす',
+                    '※腰が上がらないように',
+                    '※腹筋に力を入れる'
+                ]
+            },
+            { 
+                name: 'レッグレイズ', 
+                sets: 2,
+                howTo: [
+                    '1. 仰向けに寝る',
+                    '2. 両手は体の横、手のひらは下向き',
+                    '3. 足を揃えてまっすぐ伸ばす',
+                    '4. 腹筋を使って足を持ち上げる（90度まで）',
+                    '5. ゆっくり下ろす（床につけない）',
+                    '※腰が浮かないように注意',
+                    '※下腹部を意識'
+                ]
+            },
+            { 
+                name: 'リバーススノーエンジェル', 
+                sets: 3,
+                howTo: [
+                    '1. うつ伏せになる',
+                    '2. 両腕を前に伸ばす',
+                    '3. 肩甲骨を寄せながら腕を体側に引く',
+                    '4. 雪の天使の逆の動き',
+                    '5. ゆっくり元に戻す',
+                    '※背中の筋肉を収縮させる',
+                    '※姿勢改善に効果的'
+                ]
+            },
+            { 
+                name: 'プランク', 
+                sets: 1,
+                howTo: [
+                    '1. うつ伏せから肘とつま先で体を支える',
+                    '2. 体を一直線に保つ',
+                    '3. お尻が上がらない・下がらない',
+                    '4. 深く呼吸を続ける',
+                    '5. 腹筋と体幹に力を入れる',
+                    '※30秒間姿勢をキープ',
+                    '※呼吸を意識'
+                ]
+            },
+            { 
+                name: 'サイドプランク（右）', 
+                sets: 1,
+                howTo: [
+                    '1. 右側を下にして横向きに寝る',
+                    '2. 右肘とつま先で体を支えて持ち上げる',
+                    '3. 体を一直線に保つ',
+                    '4. 左手は腰に置く',
+                    '5. 30秒間キープ',
+                    '※腰が落ちないように',
+                    '※右の体側の筋肉を意識'
+                ]
+            },
+            { 
+                name: 'サイドプランク（左）', 
+                sets: 1,
+                howTo: [
+                    '1. 左側を下にして横向きに寝る',
+                    '2. 左肘とつま先で体を支えて持ち上げる',
+                    '3. 体を一直線に保つ',
+                    '4. 右手は腰に置く',
+                    '5. 30秒間キープ',
+                    '※腰が落ちないように',
+                    '※左の体側の筋肉を意識'
+                ]
+            }
         ];
 
         const stretches = [
-            { name: '胸・肩ストレッチ', duration: 90, details: ['壁押しストレッチ：左右各30秒', '肩甲骨回し：30秒'] },
-            { name: '背中・体側ストレッチ', duration: 90, details: ['チャイルドポーズ：45秒', 'キャット&カウ：45秒'] },
-            { name: '股関節・下半身ストレッチ', duration: 120, details: ['ランジストレッチ：左右各45秒', '開脚前屈：30秒'] },
-            { name: '腹筋・呼吸ストレッチ', duration: 120, details: ['コブラポーズ：45秒', '仰向け深呼吸：75秒'] }
+            { 
+                name: '胸・肩ストレッチ', 
+                duration: 90,
+                howTo: [
+                    '【壁押しストレッチ：左右各30秒】',
+                    '1. 壁の横に立つ',
+                    '2. 右手を壁につけて、腕を後ろに伸ばす',
+                    '3. 体を左側にゆっくりひねる',
+                    '4. 胸と肩の前側が伸びるのを感じる',
+                    '5. 呼吸を止めずに30秒キープ',
+                    '6. 反対側も同様に',
+                    '',
+                    '【肩甲骨回し：30秒】',
+                    '1. 両手を肩に置く（肘を曲げた状態）',
+                    '2. 肘で大きな円を描くように回す',
+                    '3. 前回し15秒 → 後ろ回し15秒',
+                    '4. 肩甲骨を大きく動かす意識'
+                ]
+            },
+            { 
+                name: '背中・体側ストレッチ', 
+                duration: 90,
+                howTo: [
+                    '【チャイルドポーズ：45秒】',
+                    '1. 四つん這いになる',
+                    '2. お尻をかかとに近づけながら座る',
+                    '3. 両手を前に伸ばして床につける',
+                    '4. おでこも床につける',
+                    '5. 深呼吸しながらリラックス',
+                    '6. 背中全体が伸びるのを感じる',
+                    '',
+                    '【キャット&カウ：45秒】',
+                    '1. 四つん這いになる',
+                    '2. キャット：息を吐きながら背中を丸める',
+                    '3. カウ：息を吸いながら背中を反らす',
+                    '4. ゆっくり繰り返す（5-6回）',
+                    '5. 背骨を動かす意識'
+                ]
+            },
+            { 
+                name: '股関節・下半身ストレッチ', 
+                duration: 120,
+                howTo: [
+                    '【ランジストレッチ：左右各45秒】',
+                    '1. 右足を大きく前に出す（膝を90度）',
+                    '2. 左足は後ろに伸ばす（膝は床につけてOK）',
+                    '3. 腰を前に押し出すように',
+                    '4. 左の股関節前側が伸びるのを感じる',
+                    '5. 背筋は伸ばしたまま',
+                    '6. 45秒キープして反対側も',
+                    '',
+                    '【開脚前屈：30秒】',
+                    '1. 足を左右に大きく開いて座る',
+                    '2. 背筋を伸ばしたまま、上体を前に倒す',
+                    '3. 無理せず、痛気持ちいいところで',
+                    '4. 深呼吸しながら30秒キープ'
+                ]
+            },
+            { 
+                name: '腹筋・呼吸ストレッチ', 
+                duration: 120,
+                howTo: [
+                    '【コブラポーズ：45秒】',
+                    '1. うつ伏せになる',
+                    '2. 手のひらを胸の横に置く',
+                    '3. 腕で上体を持ち上げる',
+                    '4. 腰は床につけたまま、胸を開く',
+                    '5. 顔は斜め上を向く',
+                    '6. 腹筋が伸びて、胸郭が広がる',
+                    '7. 深呼吸しながら45秒キープ',
+                    '',
+                    '【仰向け深呼吸：75秒】',
+                    '1. 仰向けに寝る',
+                    '2. 両膝を抱えて胸に引き寄せる（20秒）',
+                    '3. 足を伸ばし、腕を頭上に伸ばす（20秒）',
+                    '4. 全身脱力してリラックス（35秒）',
+                    '5. 腹式呼吸を意識：',
+                    '   鼻から吸ってお腹を膨らませる（4秒）',
+                    '   口から吐いてお腹をへこませる（6秒）'
+                ]
+            }
         ];
 
         let currentSet = 0;
         let isWorking = true;
-        let timeLeft = 30;
+        let timeLeft = 10;
         let isPaused = false;
         let isStretchPhase = false;
         let currentStretchIndex = 0;
         let timer = null;
+        let isPreparation = true;
+        let audioContext = null;
 
-        // タイムラインを生成（運動と休憩を分ける）
+        function initAudio() {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+        }
+
         function generateTimeline() {
             const hiitTimelineEl = document.getElementById('hiitTimeline');
             const stretchTimelineEl = document.getElementById('stretchTimeline');
 
-            // HIITタイムライン（運動と休憩を別々に表示）
             let itemNumber = 0;
-            hiitExercises.forEach(exercise => {
+            hiitExercises.forEach((exercise, exIndex) => {
                 for (let i = 0; i < exercise.sets; i++) {
-                    // 運動
                     const workItem = document.createElement('div');
                     workItem.className = 'timeline-item work-item upcoming';
                     workItem.id = `hiit-${itemNumber}-work`;
+                    workItem.onclick = () => showExerciseHowTo(exIndex, false);
                     workItem.innerHTML = `
                         <div class="timeline-icon">💪</div>
                         <div class="timeline-content">
                             <div class="timeline-exercise">${exercise.name}</div>
-                            <div class="timeline-duration">30秒運動</div>
+                            <div class="timeline-duration">30秒</div>
                         </div>
                     `;
                     hiitTimelineEl.appendChild(workItem);
 
-                    // 休憩
                     const restItem = document.createElement('div');
                     restItem.className = 'timeline-item rest-item upcoming';
                     restItem.id = `hiit-${itemNumber}-rest`;
                     restItem.innerHTML = `
-                        <div class="timeline-icon">⏸️</div>
+                        <div class="timeline-icon">⏸</div>
                         <div class="timeline-content">
                             <div class="timeline-exercise">休憩</div>
                             <div class="timeline-duration">15秒</div>
@@ -508,13 +814,13 @@
                 }
             });
 
-            // ストレッチタイムライン
             stretches.forEach((stretch, index) => {
                 const item = document.createElement('div');
                 item.className = 'timeline-item upcoming';
                 item.id = `stretch-${index}`;
+                item.onclick = () => showExerciseHowTo(index, true);
                 item.innerHTML = `
-                    <div class="timeline-icon">${index + 1}</div>
+                    <div class="timeline-icon">🧘</div>
                     <div class="timeline-content">
                         <div class="timeline-exercise">${stretch.name}</div>
                         <div class="timeline-duration">${stretch.duration}秒</div>
@@ -524,35 +830,48 @@
             });
         }
 
-        // タイムラインを更新
+        function showExerciseHowTo(index, isStretch) {
+            const modal = document.getElementById('howToModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalSteps = document.getElementById('modalSteps');
+
+            const exerciseData = isStretch ? stretches[index] : hiitExercises[index];
+            modalTitle.textContent = exerciseData.name;
+            
+            const steps = exerciseData.howTo || [];
+            modalSteps.innerHTML = steps.map(step => `<li>${step}</li>`).join('');
+
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
         function updateTimeline() {
+            if (isPreparation) return;
+
             document.querySelectorAll('.timeline-item').forEach(item => {
                 item.classList.remove('current', 'completed', 'upcoming');
                 item.classList.add('upcoming');
             });
 
             if (isStretchPhase) {
-                // HIITは全て完了
-                for (let i = 0; i < 17; i++) {
+                for (let i = 0; i < 18; i++) {
                     const workItem = document.getElementById(`hiit-${i}-work`);
                     const restItem = document.getElementById(`hiit-${i}-rest`);
                     if (workItem) workItem.classList.replace('upcoming', 'completed');
                     if (restItem) restItem.classList.replace('upcoming', 'completed');
                 }
 
-                // ストレッチ
                 for (let i = 0; i < stretches.length; i++) {
                     const item = document.getElementById(`stretch-${i}`);
                     if (i < currentStretchIndex) {
                         item.classList.replace('upcoming', 'completed');
                     } else if (i === currentStretchIndex) {
                         item.classList.replace('upcoming', 'current');
-                        item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                        item.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
                 }
             } else {
-                // HIIT
-                for (let i = 0; i < 17; i++) {
+                for (let i = 0; i < 18; i++) {
                     const workItem = document.getElementById(`hiit-${i}-work`);
                     const restItem = document.getElementById(`hiit-${i}-rest`);
                     
@@ -563,14 +882,14 @@
                         if (isWorking) {
                             if (workItem) {
                                 workItem.classList.replace('upcoming', 'current');
-                                workItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                                workItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
                             }
                             if (restItem) restItem.classList.add('upcoming');
                         } else {
                             if (workItem) workItem.classList.replace('upcoming', 'completed');
                             if (restItem) {
                                 restItem.classList.replace('upcoming', 'current');
-                                restItem.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+                                restItem.scrollIntoView({ behavior: 'smooth', block: 'center' });
                             }
                         }
                     }
@@ -589,36 +908,72 @@
             return 'バーピー';
         }
 
+        function getCurrentExerciseData() {
+            if (isStretchPhase) {
+                return stretches[currentStretchIndex];
+            }
+            
+            let setCount = 0;
+            for (let i = 0; i < hiitExercises.length; i++) {
+                if (currentSet < setCount + hiitExercises[i].sets) {
+                    return hiitExercises[i];
+                }
+                setCount += hiitExercises[i].sets;
+            }
+            return hiitExercises[0];
+        }
+
+        function showHowTo() {
+            const exerciseData = getCurrentExerciseData();
+            const modal = document.getElementById('howToModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalSteps = document.getElementById('modalSteps');
+
+            modalTitle.textContent = exerciseData.name;
+            
+            const steps = exerciseData.howTo || [];
+            modalSteps.innerHTML = steps.map(step => `<li>${step}</li>`).join('');
+
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeHowTo() {
+            const modal = document.getElementById('howToModal');
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function closeModalOnOutside(event) {
+            if (event.target.id === 'howToModal') {
+                closeHowTo();
+            }
+        }
+
         function updateDisplay() {
             const timerEl = document.getElementById('timer');
             const exerciseEl = document.getElementById('exercise');
             const statusEl = document.getElementById('status');
-            const setInfoEl = document.getElementById('set-info');
-            const phaseEl = document.getElementById('phase');
-            const stretchDetailsEl = document.getElementById('stretchDetails');
-            const stretchListEl = document.getElementById('stretchList');
+            const progressText = document.getElementById('progressText');
 
             timerEl.textContent = timeLeft;
 
-            if (isStretchPhase) {
-                phaseEl.textContent = 'ストレッチパート（7分）';
+            if (isPreparation) {
+                exerciseEl.textContent = '準備';
+                statusEl.textContent = '準備中';
+                statusEl.className = 'status preparation';
+                timerEl.className = 'timer preparation';
+                progressText.textContent = '0 / 22';
+            } else if (isStretchPhase) {
                 exerciseEl.textContent = stretches[currentStretchIndex].name;
-                statusEl.textContent = 'ストレッチ中';
+                statusEl.textContent = 'ストレッチ';
                 statusEl.className = 'status stretch';
                 timerEl.className = 'timer stretch';
-                setInfoEl.textContent = `ストレッチ ${currentStretchIndex + 1} / 4`;
-                
-                stretchDetailsEl.style.display = 'block';
-                stretchListEl.innerHTML = stretches[currentStretchIndex].details
-                    .map(detail => `<li>${detail}</li>`)
-                    .join('');
+                progressText.textContent = `${18 + currentStretchIndex + 1} / 22`;
             } else {
-                phaseEl.textContent = 'HIITパート（13分）';
-                stretchDetailsEl.style.display = 'none';
-                
                 if (isWorking) {
                     exerciseEl.textContent = getCurrentExercise();
-                    statusEl.textContent = '運動中（7割の力で）';
+                    statusEl.textContent = '運動中';
                     statusEl.className = 'status work';
                     timerEl.className = 'timer work';
                 } else {
@@ -627,43 +982,20 @@
                     statusEl.className = 'status rest';
                     timerEl.className = 'timer rest';
                 }
-                setInfoEl.textContent = `セット ${currentSet + 1} / 17 (HIITパート)`;
+                progressText.textContent = `${currentSet + 1} / 22`;
             }
 
-            let totalSets = 17 + 4;
-            let currentProgress = isStretchPhase ? 17 + currentStretchIndex : currentSet;
+            let totalSets = 18 + 4;
+            let currentProgress = isPreparation ? 0 : (isStretchPhase ? 18 + currentStretchIndex : currentSet);
             let progress = (currentProgress / totalSets) * 100;
             document.getElementById('progress').style.width = progress + '%';
 
             updateTimeline();
         }
 
-        // 音声関数
-        function playTickSound() {
+        function playBeep(frequency = 800, duration = 200, volume = 0.7) {
             try {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-                
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-                
-                oscillator.frequency.value = 440;
-                oscillator.type = 'sine';
-                
-                gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
-                
-                oscillator.start(audioContext.currentTime);
-                oscillator.stop(audioContext.currentTime + 0.05);
-            } catch (e) {
-                console.log('Audio not supported');
-            }
-        }
-
-        function playBeep(frequency = 800, duration = 200) {
-            try {
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                initAudio();
                 const oscillator = audioContext.createOscillator();
                 const gainNode = audioContext.createGain();
                 
@@ -673,49 +1005,52 @@
                 oscillator.frequency.value = frequency;
                 oscillator.type = 'sine';
                 
-                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
                 gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration / 1000);
                 
                 oscillator.start(audioContext.currentTime);
                 oscillator.stop(audioContext.currentTime + duration / 1000);
             } catch (e) {
-                console.log('Audio not supported');
+                console.log('Audio not supported:', e);
             }
         }
 
         function startWorkout() {
             if (timer) return;
             
+            initAudio();
+            
             document.getElementById('startBtn').disabled = true;
             document.getElementById('pauseBtn').disabled = false;
             isPaused = false;
+            isPreparation = true;
+            timeLeft = 10;
             
-            playBeep(600, 300);
+            playBeep(600, 300, 0.7);
             
             timer = setInterval(() => {
                 if (isPaused) return;
                 
                 timeLeft--;
                 
-                // チクタク音（最後の3秒以外）
-                if (timeLeft > 3) {
-                    playTickSound();
-                }
-                
-                // カウントダウン音（最後の3秒）
-                if (timeLeft <= 3 && timeLeft > 0) {
-                    playBeep(800, 100);
+                if (timeLeft <= 5 && timeLeft > 0) {
+                    playBeep(1000, 150, 0.7);
                 }
                 
                 if (timeLeft <= 0) {
-                    playBeep(1000, 300);
+                    playBeep(1400, 400, 0.8);
                     
-                    if (isStretchPhase) {
+                    if (isPreparation) {
+                        isPreparation = false;
+                        isWorking = true;
+                        timeLeft = 30;
+                    } else if (isStretchPhase) {
                         currentStretchIndex++;
                         if (currentStretchIndex >= stretches.length) {
                             clearInterval(timer);
                             timer = null;
-                            alert('🎉 トレーニング完了！お疲れ様でした！');
+                            playBeep(1600, 600, 0.8);
+                            alert('🎉 完了！');
                             resetWorkout();
                             return;
                         }
@@ -728,7 +1063,7 @@
                             isWorking = true;
                             currentSet++;
                             
-                            if (currentSet >= 17) {
+                            if (currentSet >= 18) {
                                 isStretchPhase = true;
                                 currentStretchIndex = 0;
                                 timeLeft = stretches[0].duration;
@@ -745,10 +1080,10 @@
 
         function togglePause() {
             isPaused = !isPaused;
-            document.getElementById('pauseBtn').textContent = isPaused ? '再開' : '一時停止';
+            document.getElementById('pauseBtn').innerHTML = isPaused ? '▶ Resume' : '⏸ Pause';
             
             if (!isPaused) {
-                playBeep(600, 200);
+                playBeep(600, 200, 0.6);
             }
         }
 
@@ -757,23 +1092,23 @@
             timer = null;
             currentSet = 0;
             isWorking = true;
-            timeLeft = 30;
+            timeLeft = 10;
             isPaused = false;
             isStretchPhase = false;
             currentStretchIndex = 0;
+            isPreparation = true;
             
             document.getElementById('startBtn').disabled = false;
             document.getElementById('pauseBtn').disabled = true;
-            document.getElementById('pauseBtn').textContent = '一時停止';
+            document.getElementById('pauseBtn').innerHTML = '⏸ Pause';
             
-            document.getElementById('status').textContent = 'スタートボタンを押してください';
+            document.getElementById('status').textContent = 'Ready';
             document.getElementById('status').className = 'status';
-            document.getElementById('phase').textContent = '準備完了';
+            document.getElementById('exercise').textContent = 'バーピー';
             
             updateDisplay();
         }
 
-        // 初期化
         generateTimeline();
         updateDisplay();
     </script>
